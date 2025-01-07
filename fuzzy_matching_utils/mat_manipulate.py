@@ -1,4 +1,5 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
+from copy import deepcopy as dp
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
@@ -100,15 +101,15 @@ def find_top_n_core(col_values, n, i):
         sorted_indices = np.argsort(col_values[:, 1])
         sorted_matrix = col_values[sorted_indices]
         new_matrix = sorted_matrix[-n:]
-        top_indices = new_matrix[:, 0].tolist()  # 获取最大的前n个值的索引
-        top_values = new_matrix[:, 1].tolist()  # 获取对应的值
+        top_indices = new_matrix[:, 0].tolist()  # get the max n indices
+        top_values = new_matrix[:, 1].tolist()  # get associated values
         print('col', i, 'done')
         return (top_indices, top_values)
     except Exception as e:
         print('col', i, 'error', str(e))
 
 
-def get_max_n():
+def get_max_n(input_short: list[str], input_long: list[str]):
     def find_top_n_indices_sparse(matrix, n):
         result = []
         values_result = []
@@ -124,36 +125,30 @@ def get_max_n():
             values_result.append(element[1])
         return result, values_result
 
-    inpath = r'/mnt/century/Franchise/minnesota_match/matrix_tfidf_2/tf_idf_cossim_matrix_0.5_all.npz'
+    inpath = matrix_path + r'/tf_idf_cossim_matrix_0.5_all.npz'
     matrix = sp.load_npz(inpath)
     n = 40
     result_find = find_top_n_indices_sparse(matrix, n)
     indices = result_find[0]
     similiarity = result_find[1]
     print('build csv begin')
-    sample_db_path = r'/mnt/century/Franchise/Sampletry/db_companyname_list_bigger'
-    subject_path = r'/mnt/century/Franchise/minnesota_match/minnesota_fnadded_simplified_bigger.csv'
-    output_path = mid_path + r'/tf_idf_matrix_cos_try.csv'
-    subject_df = pd.read_csv(subject_path, index_col=0)
-    clean_list = list(subject_df['company name'])
-    db_year_df = pd.read_csv(sample_db_path, index_col=0)
-    db_year_list = list(db_year_df['companyname db'])
-    matched_list = [str(element) for element in db_year_list]
-    cali_name_list = []
+    output_path = mid_path + r'/tf_idf_matrix_cos_match_table.csv'
+    short_name_list = []
     similarity_list = []
-    db_name_list = []
+    long_name_list = []
     for i in range(len(indices)):
         similiarity_i = similiarity[i]
         index_i = indices[i]
         similarity_list.extend(similiarity_i)
-        cali_name_list.extend([clean_list[i]] * len(index_i))
+        short_name_list.extend([input_short[i]] * len(index_i))
         for m in index_i:
-            db_name_list.append(matched_list[int(m)])
-    df_dict = {'indi company name': cali_name_list,
-               'db company name': db_name_list,
+            long_name_list.append(input_long[int(m)])
+    short_col_name = src_data_name
+    long_col_name = match_data_name
+    df_dict = {short_col_name:  short_name_list,
+               long_col_name: long_name_list,
                'similarity': similarity_list}
     df_output = pd.DataFrame(df_dict)
     print('build csv done')
     df_output.to_csv(output_path)
-get_max_n()
 
