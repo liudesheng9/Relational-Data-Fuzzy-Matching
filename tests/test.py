@@ -19,3 +19,9 @@ all_long_mat_num = fuzzy_matching_utils.tf_idf_get_matrix(short_list, long_list)
 
 #calculate cosine similarity
 fuzzy_matching_utils.run_cossim_calculator(all_long_mat_num)
+
+#gen mid match table
+fuzzy_matching_utils.mat_manipulate.get_max_n(short_list, long_list)
+
+#filter result
+fuzzy_matching_utils.build_filter.fuzzy_score_calculator()

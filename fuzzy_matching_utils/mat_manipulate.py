@@ -74,8 +74,6 @@ def cossim_calculator(i):
         print('matrix', i, 'done')
     except Exception as e:
         print('matrix', i, 'error', str(e))
-for i in range(41,85):
-    cossim_calculator(i)
 
 def run_cossim_calculator(m):
     with mp.Pool(2) as p:
