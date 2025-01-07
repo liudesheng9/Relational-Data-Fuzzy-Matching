@@ -7,13 +7,13 @@ def data_loader(file_path: str) -> pd.DataFrame:
     '''
     a safer method for loading data
     '''
-    return pd.read_csv(file_path)
+    return pd.read_csv(file_path, index_col = False)
 
 def data_saver(data: pd.DataFrame, file_path: str):
     '''
     a safer method for saving data
     '''
-    data.to_csv(file_path, index=False)
+    data.to_csv(file_path)
 
 def create_global_path_list():
     '''
