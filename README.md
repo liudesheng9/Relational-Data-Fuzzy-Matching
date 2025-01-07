@@ -3,7 +3,7 @@ Fast fuzzy matching for all-kinds of string data.
 
 ## Highlights
 - 🚀 a fast data pipeline for string relational data fuzzy matching.
-- ⚡️ 720X faster than 48 thread fuzzywuzzy fuzzy matching in 35,000 X 84,000,000 fuzzy matching task.
+- ⚡️ **720X** faster than **48** thread fuzzywuzzy fuzzy matching in **35,000 X 84,000,000** fuzzy matching task.
 - 💾 Disk-space efficient, store large matrix as .npz format sparce matrix.
 - 🖥️ Supports macOS, Linux, Windows, and any other operate system can run Python.
 
@@ -12,4 +12,9 @@ This is a **bare bone implementation** of the algorithm. You can change the data
 
 The basic pipeline can be divided in to these parts:
 
+```
 INPUT --> PREPROCESS --> TF-IDF VECTORIZATION --> COSINE SIMILARITY CALCULATION --> 1ST FILTERING --> BUILD MATCHTABLE --> 2ND FILTERING --> OUTPUT
+```
+
+## Example
+An implementation example is given in `./tests/test.py`.
